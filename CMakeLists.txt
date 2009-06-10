@@ -16,5 +16,5 @@ find_package(Phonon REQUIRED)
 include(${QT_USE_FILE} ${PHONON_INCLUDE_DIR})
 
 add_executable(simpleplayer ${SIMPLEPLAYER_SRCS})
-target_link_libraries(simpleplayer ${QT_LIBRARIES} ${PHONON_LIBRARY})
+target_link_libraries(simpleplayer ${QT_LIBRARIES} ${PHONON_LIBRARY} phononexperimental)
 

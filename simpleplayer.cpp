@@ -11,6 +11,7 @@
 #include <phonon/phononnamespace.h>
 #include <phonon/mediaobject.h>
 #include <phonon/audiooutput.h>
+#include <phonon/experimental/audiodataoutput.h>
 
 int main(int argc, char * argv[])
 {
@@ -35,6 +36,11 @@ int main(int argc, char * argv[])
     Phonon::MediaObject media(&app);
     media.connect(&media, SIGNAL(finished()), &app, SLOT(quit()));
     Phonon::createPath(&media, &output);
+
+
+    Phonon::Experimental::AudioDataOutput dataout(&app);
+    Phonon::createPath(&media, &dataout);
+
 
     media.setCurrentSource(url);
     media.play();
