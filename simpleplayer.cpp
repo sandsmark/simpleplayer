@@ -29,9 +29,11 @@ int main(int argc, char * argv[])
     }
 
     QApplication app(argc, argv);
+    app.setApplicationName("simpleplayer");
     
     Phonon::AudioOutput output(Phonon::MusicCategory, &app);
     Phonon::MediaObject media(&app);
+    media.connect(&media, SIGNAL(finished()), &app, SLOT(quit()));
     Phonon::createPath(&media, &output);
 
     media.setCurrentSource(url);
