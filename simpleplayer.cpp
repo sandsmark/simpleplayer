@@ -11,7 +11,7 @@
 #include <phonon/phononnamespace.h>
 #include <phonon/mediaobject.h>
 #include <phonon/audiooutput.h>
-#include <phonon/experimental/audiodataoutput.h>
+#include <phonon/audiodataoutput.h>
 
 int main(int argc, char * argv[])
 {
@@ -31,15 +31,17 @@ int main(int argc, char * argv[])
 
     QApplication app(argc, argv);
     app.setApplicationName("simpleplayer");
-    
+
     Phonon::AudioOutput output(Phonon::MusicCategory, &app);
     Phonon::MediaObject media(&app);
     media.connect(&media, SIGNAL(finished()), &app, SLOT(quit()));
-    Phonon::createPath(&media, &output);
 
-
-    Phonon::Experimental::AudioDataOutput dataout(&app);
+    std::cout << " -------------- CREATING AudioDataOutput -------------- " << std::endl;
+    Phonon::AudioDataOutput dataout(&app);
+    std::cout << " ------------- CONNECTING AudioDataOutput ------------- " << std::endl;
     Phonon::createPath(&media, &dataout);
+    Phonon::createPath(&dataout, &output);
+    std::cout << " ------------------------ DONE ------------------------ " << std::endl;
 
 
     media.setCurrentSource(url);
