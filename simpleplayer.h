@@ -17,7 +17,7 @@ class SimpleOutput : public QObject
 public slots:
     void handle(const QMap<Phonon::AudioDataOutput::Channel, QVector<qint16> > &data) {
         foreach (qint16 i, data.value(Phonon::AudioDataOutput::LeftChannel))
-            std::cout << i;
+            std::cout << (char)i;
     }
 };
 
