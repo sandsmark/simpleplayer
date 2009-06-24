@@ -5,13 +5,25 @@
 
 #include <iostream>
 
-#include <QApplication>
+#include <QObject>
+#include <QCoreApplication>
 #include <QUrl>
 
 #include <phonon/phononnamespace.h>
 #include <phonon/mediaobject.h>
 #include <phonon/audiooutput.h>
 #include <phonon/audiodataoutput.h>
+
+class Output : public QObject
+{
+  Q_OBJECT
+
+public:
+    void handle(const QMap<Phonon::AudioDataOutput::Channel, QVector<qint16> > &data) {
+        foreach (qint16 i, data.value(Phonon::AudioDataOutput::LeftChannel))
+            std::cout << i;
+    }
+};
 
 int main(int argc, char * argv[])
 {
@@ -29,20 +41,20 @@ int main(int argc, char * argv[])
         return 0;
     }
 
-    QApplication app(argc, argv);
+    QCoreApplication app(argc, argv);
     app.setApplicationName("simpleplayer");
 
     Phonon::AudioOutput output(Phonon::MusicCategory, &app);
     Phonon::MediaObject media(&app);
     media.connect(&media, SIGNAL(finished()), &app, SLOT(quit()));
 
-    std::cout << " -------------- CREATING AudioDataOutput -------------- " << std::endl;
     Phonon::AudioDataOutput dataout(&app);
-    std::cout << " ------------- CONNECTING AudioDataOutput ------------- " << std::endl;
     Phonon::createPath(&media, &dataout);
     Phonon::createPath(&dataout, &output);
-    std::cout << " ------------------------ DONE ------------------------ " << std::endl;
 
+    Output dumper;
+    dumper.connect(&dataout, SIGNAL(dataReady(const QMap<Phonon::AudioDataOutput::Channel, QVector<float> > &data)),
+                   &dumper, SLOT(handle(const QMap<Phonon::AudioDataOutput::Channel, QVector<qint16> >)));
 
     media.setCurrentSource(url);
     media.play();
@@ -50,3 +62,4 @@ int main(int argc, char * argv[])
     app.exec();
 }
 
+#include <moc_simpleplayer.cxx>
