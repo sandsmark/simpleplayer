@@ -8,7 +8,8 @@ cmake_minimum_required(VERSION 2.6)
 
 project (simpleplayer)
 
-set (SIMPLEPLAYER_SRCS simpleplayer.cpp)
+set (simpleplayer_srcs simpleplayer.cpp)
+set (simpleplayer_hdrs simpleplayer.h)
 add_definitions(-Wall -Werror)
 
 find_package(Qt4 REQUIRED)
@@ -16,9 +17,9 @@ find_package(Phonon REQUIRED)
 include(${QT_USE_FILE} ${PHONON_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-qt4_wrap_cpp(SIMPLEPLAYER_MOC ${SIMPLEPLAYER_SRCS})
+qt4_wrap_cpp(simpleplayer_moc ${simpleplayer_hdrs})
 
-add_executable(simpleplayer ${SIMPLEPLAYER_SRCS})
+add_executable(simpleplayer ${simpleplayer_srcs} ${simpleplayer_moc})
 target_link_libraries(simpleplayer ${QT_LIBRARIES} ${PHONON_LIBRARY})
 
 #phononexperimental
