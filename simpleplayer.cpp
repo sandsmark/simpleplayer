@@ -40,14 +40,13 @@ int main(int argc, char * argv[])
 
     Phonon::AudioDataOutput dataout(&app);
     Phonon::createPath(&media, &dataout);
-    Phonon::createPath(&dataout, &output);
+    Phonon::createPath(&media, &output);
 
     SimpleOutput dumper;
     dumper.connect(&dataout, SIGNAL(dataReady(const QMap<Phonon::AudioDataOutput::Channel, QVector<qint16> >&)),
-                   &dumper,  SLOT(handle(const QMap<Phonon::AudioDataOutput::Channel, QVector<qint16> >&)),
-		   Qt::DirectConnection);
+                   &dumper,  SLOT(handle(const QMap<Phonon::AudioDataOutput::Channel,      QVector<qint16> >&)));
 
-    media.setCurrentSource(url);
+    media.setCurrentSource(QString(argv[1]));
     media.play();
 
     app.exec();
