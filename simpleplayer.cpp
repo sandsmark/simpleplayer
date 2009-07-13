@@ -7,8 +7,9 @@
 
 #include <iostream>
 
-#include <QCoreApplication>
+#include <QApplication>
 #include <QUrl>
+#include <QPainter>
 
 #include <phonon/audiodataoutput.h>
 #include <phonon/audiooutput.h>
@@ -31,7 +32,7 @@ int main(int argc, char * argv[])
         return 0;
     }
 
-    QCoreApplication app(argc, argv);
+    QApplication app(argc, argv);
     app.setApplicationName("simpleplayer");
 
     Phonon::AudioOutput output(Phonon::MusicCategory, &app);
@@ -40,7 +41,7 @@ int main(int argc, char * argv[])
 
     Phonon::AudioDataOutput dataout(&app);
     Phonon::createPath(&media, &dataout);
-    Phonon::createPath(&media, &output);
+    Phonon::createPath(&dataout, &output);
 
     SimpleOutput dumper;
     dumper.connect(&dataout, SIGNAL(dataReady(const QMap<Phonon::AudioDataOutput::Channel, QVector<qint16> >&)),
@@ -52,3 +53,33 @@ int main(int argc, char * argv[])
     app.exec();
 }
 
+void SimpleOutput::handle(const QMap<Phonon::AudioDataOutput::Channel, QVector<qint16> > &data)
+{
+    float *buffer = new float[512];
+    float *input = new float[512];
+
+    for (int i=0; i<512; i++)
+        input[i] = static_cast<float>(data[Phonon::AudioDataOutput::LeftChannel][i]) / static_cast<float>(0x7fff);
+
+
+    m_fht.copy(buffer, input);
+    m_fht.logSpectrum(input, buffer);
+    m_fht.scale(buffer, 1.0/20);
+
+    m_fht.ewma(&m_history.front(), buffer, 0.5);
+
+    m_pixmap.fill(Qt::transparent);
+    QPainter paint(&m_pixmap);
+    int w = m_pixmap.width()/256;
+    for (int i=0; i<256; i++)
+        paint.fillRect(i*w, m_pixmap.height() - m_history[i]*200, w, m_history[i]*200, Qt::black);
+
+
+    update();
+}
+
+void SimpleOutput::paintEvent(QPaintEvent* )
+{
+    QPainter painter(this);
+    painter.drawPixmap(0, 0, m_pixmap);
+}

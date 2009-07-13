@@ -8,7 +8,10 @@ cmake_minimum_required(VERSION 2.6)
 
 project (simpleplayer)
 
-set (simpleplayer_srcs simpleplayer.cpp)
+set (simpleplayer_srcs
+    simpleplayer.cpp
+    fht.cpp)
+
 set (simpleplayer_hdrs simpleplayer.h)
 add_definitions(-Wall -Werror)
 
