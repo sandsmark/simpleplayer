@@ -66,14 +66,14 @@ void SimpleOutput::handle(const QMap<Phonon::AudioDataOutput::Channel, QVector<q
     m_fht.logSpectrum(input, buffer);
     m_fht.scale(buffer, 1.0/20);
 
-    m_fht.ewma(&m_history.front(), buffer, 0.5);
+    m_fht.ewma(&m_history.front(), buffer, .75);
 
     m_pixmap.fill(Qt::transparent);
     QPainter paint(&m_pixmap);
     int w = m_pixmap.width()/256;
-    for (int i=0; i<256; i++)
+    for (int i=0; i<256; i++) {
         paint.fillRect(i*w, m_pixmap.height() - m_history[i]*200, w, m_history[i]*200, Qt::black);
-
+    }
 
     update();
 }
