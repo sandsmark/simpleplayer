@@ -23,7 +23,6 @@
 
 #include <math.h>
 #include <string.h>
-#include <iostream>
 
 FHT::FHT(int n) :
     m_buf(0),
