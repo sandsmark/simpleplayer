@@ -4,6 +4,7 @@
 // love long and prosper
 
 #include "simpleplayer.h"
+#include "boomanalyzer.h"
 
 #include <iostream>
 
@@ -43,9 +44,12 @@ int main(int argc, char * argv[])
     Phonon::createPath(&media, &dataout);
     Phonon::createPath(&dataout, &output);
 
-    SimpleOutput dumper;
+    //SimpleOutput dumper;
+    BoomAnalyzer dumper(0);
     dumper.connect(&dataout, SIGNAL(dataReady(const QMap<Phonon::AudioDataOutput::Channel, QVector<qint16> >&)),
-                   &dumper,  SLOT(handle(const QMap<Phonon::AudioDataOutput::Channel,      QVector<qint16> >&)));
+                   &dumper,  SLOT(drawFrame(const QMap<Phonon::AudioDataOutput::Channel,      QVector<qint16> >&)));
+
+    dumper.show();
 
     media.setCurrentSource(QString(argv[1]));
     media.play();
@@ -58,8 +62,9 @@ void SimpleOutput::handle(const QMap<Phonon::AudioDataOutput::Channel, QVector<q
     float *buffer = new float[512];
     float *input = new float[512];
 
-    for (int i=0; i<512; i++)
+    for (int i=0; i<512; i++) {
         input[i] = static_cast<float>(data[Phonon::AudioDataOutput::LeftChannel][i]) / static_cast<float>(0x7fff);
+    }
 
 
     m_fht.copy(buffer, input);

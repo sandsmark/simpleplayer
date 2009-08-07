@@ -10,9 +10,15 @@ project (simpleplayer)
 
 set (simpleplayer_srcs
     simpleplayer.cpp
-    fht.cpp)
+    fht.cpp
+    analyzerbase.cpp
+    boomanalyzer.cpp)
 
-set (simpleplayer_hdrs simpleplayer.h)
+set (simpleplayer_hdrs
+     simpleplayer.h
+     boomanalyzer.h
+     analyzerbase.h)
+
 add_definitions(-Wall -Werror)
 
 find_package(Qt4 REQUIRED)
