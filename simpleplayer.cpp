@@ -4,7 +4,7 @@
 // love long and prosper
 
 #include "simpleplayer.h"
-#include "boomanalyzer.h"
+#include "blockanalyzer.h"
 
 #include <iostream>
 
@@ -45,7 +45,7 @@ int main(int argc, char * argv[])
     Phonon::createPath(&dataout, &output);
 
     //SimpleOutput dumper;
-    BoomAnalyzer dumper(0);
+    BlockAnalyzer dumper(0);
     dumper.connect(&dataout, SIGNAL(dataReady(const QMap<Phonon::AudioDataOutput::Channel, QVector<qint16> >&)),
                    &dumper,  SLOT(drawFrame(const QMap<Phonon::AudioDataOutput::Channel,      QVector<qint16> >&)));
 

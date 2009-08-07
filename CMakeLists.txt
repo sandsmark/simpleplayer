@@ -12,12 +12,14 @@ set (simpleplayer_srcs
     simpleplayer.cpp
     fht.cpp
     analyzerbase.cpp
-    boomanalyzer.cpp)
+    boomanalyzer.cpp
+    blockanalyzer.cpp)
 
 set (simpleplayer_hdrs
      simpleplayer.h
      boomanalyzer.h
-     analyzerbase.h)
+     analyzerbase.h
+     blockanalyzer.h)
 
 add_definitions(-Wall -Werror)
 
