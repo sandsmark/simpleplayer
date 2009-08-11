@@ -33,5 +33,5 @@ qt4_wrap_cpp(simpleplayer_moc ${simpleplayer_hdrs})
 add_executable(simpleplayer ${simpleplayer_srcs} ${simpleplayer_moc})
 target_link_libraries(simpleplayer ${QT_LIBRARIES} ${PHONON_LIBRARY})
 
-#phononexperimental
+install(TARGETS simpleplayer DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
