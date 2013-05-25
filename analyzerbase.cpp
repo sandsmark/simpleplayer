@@ -3,6 +3,7 @@
    Copyright 2009 by Martin Sandsmark
    LOL GPL
 */
+#include <QDebug>
 
 #include "analyzerbase.h"
 #include <cmath>        //interpolate()
@@ -58,6 +59,7 @@ void Analyzer::Base::drawFrame(const QMap<Phonon::AudioDataOutput::Channel, QVec
                         + thescope[Phonon::AudioDataOutput::RightChannel][x])
                         / (2*(1<<15)); // Average between the channels
        i += 2;
+//       qDebug() << scope[x];
     }
 
     transform(scope);

@@ -42,7 +42,8 @@ int main(int argc, char * argv[])
 
     Phonon::AudioDataOutput dataout(&app);
     Phonon::createPath(&media, &dataout);
-    Phonon::createPath(&dataout, &output);
+    Phonon::createPath(&media, &output);
+    //Phonon::createPath(&dataout, &output);
 
     //SimpleOutput dumper;
     BlockAnalyzer dumper(0);

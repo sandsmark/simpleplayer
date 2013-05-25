@@ -21,7 +21,7 @@ set (simpleplayer_hdrs
      analyzerbase.h
      blockanalyzer.h)
 
-add_definitions(-Wall -Werror)
+add_definitions(-Wall)
 
 find_package(Qt4 REQUIRED)
 find_package(Phonon REQUIRED)
